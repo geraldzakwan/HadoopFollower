@@ -1,3 +1,10 @@
+// public class TwitterLevelTwoFollowers {
+// 	public static void main(String[] args) throws Exception {
+// 		System.out.println("J");
+// 	}
+// }
+
+
 import java.io.IOException;
 import java.util.StringTokenizer;
 
@@ -25,7 +32,7 @@ public class TwitterLevelTwoFollowers {
 					String followerId = itr.nextToken();
 					context.write(new Text(userId), new Text(followerId + " 0"));
 					context.write(new Text(followerId), new Text(userId + " 1"));
-				}	
+				}
 			}
 		}
 	}
@@ -48,7 +55,7 @@ public class TwitterLevelTwoFollowers {
 			}
 		}
 	}
-	
+
 	public static class FollowingMapper extends Mapper<Object, Text, Text, Text> {
                        private static Text userId = new Text();
                        private static Text followerId = new Text();
@@ -63,11 +70,11 @@ public class TwitterLevelTwoFollowers {
                         }
                 }
         }
-	
+
 	public static class User {
 		public Text userId;
 		public int followerCount;
-		
+
 		public User(Text uid, int count) {
 			userId = new Text(uid.toString());
 			followerCount = count;
@@ -83,7 +90,7 @@ public class TwitterLevelTwoFollowers {
 			return comp;
 		}
 	}
-	
+
 	public static class FollowingReducer extends Reducer<Text,Text,Text,Text> {
 		private static ArrayList<User> countList = new ArrayList<User>();
 		private static Text count = new Text();
@@ -123,7 +130,7 @@ public class TwitterLevelTwoFollowers {
 		FileInputFormat.addInputPath(job, new Path(args[0]));
 		FileOutputFormat.setOutputPath(job, new Path(args[1]));
 		job.waitForCompletion(true);
-		
+
 		Configuration conf2 = new Configuration();
                 Job job2 = Job.getInstance(conf2, "Twitter Level Two Followers - 2");
                 job2.setJarByClass(TwitterLevelTwoFollowers.class);
